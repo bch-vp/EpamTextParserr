@@ -1,5 +1,7 @@
 package org.epam.textparser.parser.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.epam.textparser.composite.text.Component;
 import org.epam.textparser.composite.text.ComponentType;
 import org.epam.textparser.composite.text.impl.Composite;
@@ -12,6 +14,9 @@ import java.util.regex.Pattern;
 
 public class ParagraphParser extends BaseParser {
     private static final ParagraphParser instance = new ParagraphParser();
+
+    private static final Logger logger = LogManager.getLogger();
+
     public static final String SENTENCE_REGEX = "[^.!?]+[.!?]{1,3}";
 
     private ParagraphParser() {
@@ -23,6 +28,7 @@ public class ParagraphParser extends BaseParser {
 
     @Override
     public Component parse(String text) {
+        logger.info("Start parse paragraphs : \n {}", text);
         setNext(SentenceParser.getInstance());
 
         Component paragraphComposite = new Composite(ComponentType.PARAGRAPH);
@@ -38,6 +44,7 @@ public class ParagraphParser extends BaseParser {
             sentenceComposite = parseNext(sentence);
             paragraphComposite.add(sentenceComposite);
         }
+        logger.info("End parse paragraphs : \n {}", paragraphComposite);
         return paragraphComposite;
     }
 }

@@ -21,10 +21,10 @@ public class TextInterpreter {
         String resultExpression;
         try {
             resultExpression = engine.eval(expression).toString();
-            logger.debug("Successful convert expression: " + expression);
+            logger.info("Successful convert expression: " + expression);
         } catch (ScriptException exp) {
             resultExpression = expression;
-            logger.debug("Exception during convert expression:" + expression);
+            logger.warn("Exception during convert expression:" + expression);
         }
         return resultExpression;
     }

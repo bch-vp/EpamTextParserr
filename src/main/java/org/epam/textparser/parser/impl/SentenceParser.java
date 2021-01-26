@@ -1,5 +1,7 @@
 package org.epam.textparser.parser.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.epam.textparser.composite.text.Component;
 import org.epam.textparser.composite.text.ComponentType;
 import org.epam.textparser.composite.text.impl.Composite;
@@ -10,6 +12,8 @@ import java.util.regex.Pattern;
 
 public class SentenceParser extends BaseParser {
     public static final SentenceParser instance = new SentenceParser();
+
+    private static final Logger logger = LogManager.getLogger();
 
     private static final String LEXEME_REGEX = " ";
     private static final String CONDITION_CALCULATION_REGEX = "\\p{N}+";
@@ -24,6 +28,7 @@ public class SentenceParser extends BaseParser {
 
     @Override
     public Component parse(String text) {
+        logger.info("Start parse sentence : \n {}", text);
         setNext(LexemeParser.getInstance());
 
         Component sentenceComposite = new Composite(ComponentType.SENTENCE);
@@ -41,7 +46,7 @@ public class SentenceParser extends BaseParser {
             lexemeComposite = parseNext(lexeme);
             sentenceComposite.add(lexemeComposite);
         }
-
+        logger.info("End parse sentence : \n {}", sentenceComposite);
         return sentenceComposite;
     }
 }
